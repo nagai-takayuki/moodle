@@ -112,6 +112,7 @@ $string['attemptsexist'] = 'You can no longer add or remove questions.';
 $string['attemptsnum'] = 'Attempts: {$a}';
 $string['attemptsnumthisgroup'] = 'Attempts: {$a->total} ({$a->group} from this group)';
 $string['attemptsnumyourgroups'] = 'Attempts: {$a->total} ({$a->group} from your groups)';
+$string['attemptsnumstudents'] = 'Students: {$a->studentsnum} Attempts: {$a->total}';
 $string['attemptsonly'] = 'Show only students with attempts';
 $string['attemptstate'] = 'State';
 $string['attemptstillinprogress'] = 'Attempt still in progress';
