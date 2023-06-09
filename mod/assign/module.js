@@ -162,6 +162,12 @@ M.mod_assign.init_grading_options = function(Y) {
                 Y.one('form.gradingoptionsform').submit();
             });
         }
+        var prefixwithusernameelement = Y.one('#id_prefixwithusername');
+        if (prefixwithusernameelement) {
+            prefixwithusernameelement.on('change', function(e) {
+                Y.one('form.gradingoptionsform').submit();
+            });
+        }
     });
 };
 

@@ -94,6 +94,10 @@ class mod_assign_grading_options_form extends moodleform {
             $mform->addElement('checkbox', 'downloadasfolders', get_string('downloadasfolders', 'assign'));
             $mform->addHelpButton('downloadasfolders', 'downloadasfolders', 'assign');
             $mform->setDefault('downloadasfolders', $instance['downloadasfolders']);
+
+            $mform->addElement('checkbox', 'prefixwithusername', get_string('prefixwithusername', 'assign'));
+            $mform->addHelpButton('prefixwithusername', 'prefixwithusername', 'assign');
+            $mform->setDefault('prefixwithusername', $instance['prefixwithusername']);
         }
 
         // Hidden params.

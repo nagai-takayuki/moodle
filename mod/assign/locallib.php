@@ -666,7 +666,9 @@ class assign {
         } else if ($action == 'grading') {
             $o .= $this->view_grading_page();
         } else if ($action == 'downloadall') {
-            $o .= $this->download_submissions();
+            //$withusername = optional_param('withusername', false, PARAM_BOOL);
+            $withusername = get_user_preferences('assign_prefixwithusername', 1);
+            $o .= $this->download_submissions(null,$withusername);
         } else if ($action == 'submit') {
             $o .= $this->check_submit_for_grading($mform);
         } else if ($action == 'grantextension') {
@@ -3675,10 +3677,11 @@ class assign {
      * Download a zip file of all assignment submissions.
      *
      * @param array|null $userids Array of user ids to download assignment submissions in a zip file
+     * @param withusername|false $withuser when true, file prefix contains username as well as fullname.
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($userids = null) {
-        $downloader = new downloader($this, $userids ?: null);
+    protected function download_submissions($userids = null, $withusername = false) {
+        $downloader = new downloader($this, $userids ?: null, $withusername);
         if ($downloader->load_filelist()) {
             $downloader->download_zip();
         }
@@ -4497,6 +4500,7 @@ class assign {
         $quickgrading = get_user_preferences('assign_quickgrading', false);
         $showonlyactiveenrolopt = has_capability('moodle/course:viewsuspendedusers', $this->context);
         $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
+        $prefixwithusername = get_user_preferences('assign_prefixwithusername', 1);
 
         $markingallocation = $this->get_instance()->markingworkflow &&
             $this->get_instance()->markingallocation &&
@@ -4530,7 +4534,8 @@ class assign {
                                           'markingallocationopt'=>$markingallocationoptions,
                                           'showonlyactiveenrolopt'=>$showonlyactiveenrolopt,
                                           'showonlyactiveenrol' => $this->show_only_active_users(),
-                                          'downloadasfolders' => $downloadasfolders);
+                                          'downloadasfolders' => $downloadasfolders,
+                                          'prefixwithusername' => $prefixwithusername);
 
         $classoptions = array('class'=>'gradingoptionsform');
         $gradingoptionsform = new mod_assign_grading_options_form(null,
@@ -5066,6 +5071,8 @@ class assign {
 
             if ($data->operation == 'downloadselected') {
                 $this->download_submissions($userlist);
+            } else if($data->operation == 'downloadselectedwithusername') {
+                $this->download_submissions($userlist,true);
             } else {
                 foreach ($userlist as $userid) {
                     if ($data->operation == 'lock') {
@@ -7361,7 +7368,8 @@ class assign {
                                       'markingallocationopt' => $markingallocationoptions,
                                       'showonlyactiveenrolopt'=>$showonlyactiveenrolopt,
                                       'showonlyactiveenrol' => $this->show_only_active_users(),
-                                      'downloadasfolders' => get_user_preferences('assign_downloadasfolders', 1));
+                                      'downloadasfolders' => get_user_preferences('assign_downloadasfolders', 1),
+                                      'prefixwithusername' => get_user_preferences('assign_prefixwithusername', 1));
         $mform = new mod_assign_grading_options_form(null, $gradingoptionsparams);
         if ($formdata = $mform->get_data()) {
             set_user_preference('assign_perpage', $formdata->perpage);
@@ -7381,6 +7389,11 @@ class assign {
                 set_user_preference('assign_downloadasfolders', 1); // Enabled.
             } else {
                 set_user_preference('assign_downloadasfolders', 0); // Disabled.
+            }
+            if (isset($formdata->prefixwithusername)) {
+                set_user_preference('assign_prefixwithusername', 1); // Enabled.
+            } else {
+                set_user_preference('assign_prefixwithusername', 0); // Disabled.
             }
             if (!empty($showonlyactiveenrolopt)) {
                 $showonlyactiveenrol = isset($formdata->showonlyactiveenrol);
