@@ -42,6 +42,9 @@ class downloader {
     /** @var array|null the selected user ids, if any. */
     private $userids = null;
 
+    /** @var withusername|false when true, file prefix contains username as well as fullname. */
+    private $withusername = false;
+
     /** @var int $groupmode the activity group mode. */
     private $groupmode = '';
 
@@ -66,9 +69,10 @@ class downloader {
      * @param assign $manager the instance manager
      * @param array|null $userids the user ids to download.
      */
-    public function __construct(assign $manager, ?array $userids = null) {
+    public function __construct(assign $manager, ?array $userids = null, $withusername = false) {
         $this->manager = $manager;
         $this->userids = $userids;
+        $this->withusername = $withusername;
         $this->instance = $manager->get_instance();
 
         $this->downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
@@ -190,6 +194,9 @@ class downloader {
             $fullname = get_string('participant', 'mod_assign');
         } else {
             $fullname = fullname($student, has_capability('moodle/site:viewfullnames', $manager->get_context()));
+            if($this->withusername) {
+                $fullname = $student->username . "_" . $fullname;
+            }
         }
         $prefix = str_replace('_', ' ', $fullname);
         $prefix = clean_filename($prefix . '_' . $manager->get_uniqueid_for_user($student->id));
