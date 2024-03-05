@@ -5069,9 +5069,8 @@ class assign {
             }
 
             if ($data->operation == 'downloadselected') {
-                $this->download_submissions($userlist);
-            } else if($data->operation == 'downloadselectedwithusername') {
-                $this->download_submissions($userlist,true);
+                $withusername = get_user_preferences('assign_prefixwithusername', 1);
+                $this->download_submissions($userlist,$withusername);
             } else {
                 foreach ($userlist as $userid) {
                     if ($data->operation == 'lock') {
