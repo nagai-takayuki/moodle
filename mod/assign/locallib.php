@@ -4562,18 +4562,6 @@ class assign {
             userinitials: [
                 'firstname' => $gradingtable->get_initial_first(),
                 'lastname' => $gradingtable->get_initial_last(),
-            ],
-            quickgrading: [
-                'baseurl' => $currenturl->out(false),
-                'enabled' => $quickgrading
-            ],
-            downloadasfolders: [
-                'baseurl' => $currenturl->out(false),
-                'enabled' => $downloadasfolders
-            ],
-            prefixwithusername: [
-                'baseurl' => $currenturl->out(false),
-                'enabled' => $prefixwithusername
             ]
         );
         $actionformtext = $this->get_renderer()->render($buttons);
