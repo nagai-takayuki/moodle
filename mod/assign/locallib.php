@@ -128,8 +128,7 @@ class assign {
     /** @var grade_item the grade_item record for this assign instance's primary grade item. */
     private $gradeitem;
 
-    /** @var context the context of the course module for this assign instance
-     *               (or just the course if we are creating a new one)
+    /** @var context the context of the course module for this assign instance'
      */
     private $context;
 
@@ -4503,6 +4502,12 @@ class assign {
         $submitteddownloadasfolders = optional_param('downloadasfolders', null, PARAM_BOOL);
         if (isset($submitteddownloadasfolders)) {
             set_user_preference('assign_downloadasfolders', $submitteddownloadasfolders);
+        }
+
+        // assign_prefixwithusername属性の保存処理を追加
+        $submittedprefixwithusername = optional_param('prefixwithusername', null, PARAM_BOOL);
+        if (isset($submittedprefixwithusername)) {
+            set_user_preference('assign_prefixwithusername', $submittedprefixwithusername);
         }
 
         $submittedperpage = optional_param('perpage', null, PARAM_INT);

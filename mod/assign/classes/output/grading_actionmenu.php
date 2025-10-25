@@ -223,6 +223,12 @@ class grading_actionmenu implements templatable, renderable {
                 'baseurl' => $downloadasfoldersbaseurl->out(false),
                 'enabled' => $downloadasfolders,
             ];
+
+            $prefixwithusername = get_user_preferences('assign_prefixwithusername', 1);
+            $data['prefixwithusername'] = [
+                'baseurl' => $downloadasfoldersbaseurl->out(false),
+                'enabled' => $prefixwithusername,
+            ];
         }
 
         $actions = $this->get_actions();
